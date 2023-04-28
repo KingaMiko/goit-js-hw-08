@@ -51,7 +51,7 @@ galleryItems.forEach(el => {
 // }
 // galleryCreate();
 
-//Method 3
+//Method 3 (this is the most simple method for me - in this Task)
 // const imageMarkup = createMarkup(galleryItems);
 // gallery.insertAdjacentHTML('beforeend', imageMarkup);
 
