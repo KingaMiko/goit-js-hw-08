@@ -17,11 +17,7 @@ function saveToLocalStorage() {
   }
 }
 
-const throttleSaveToLocalStorage = throttle(saveToLocalStorage, 500);
-
-form.addEventListener('input', () => {
-  throttleSaveToLocalStorage();
-});
+form.addEventListener('input', throttle(saveToLocalStorage, 500));
 
 window.addEventListener('load', () => {
   try {
@@ -35,8 +31,19 @@ window.addEventListener('load', () => {
   }
 });
 
-form.addEventListener('submit', event => {
+function validateForm() {
+  if (!messageInput.value.trim()) {
+    alert('Please enter a message');
+    return false;
+  }
+  return true;
+}
+
+function handleSubmit(event) {
   event.preventDefault();
+  if (!validateForm()) {
+    return;
+  }
   const feedback = {
     email: emailInput.value,
     message: messageInput.value,
@@ -45,4 +52,6 @@ form.addEventListener('submit', event => {
   emailInput.value = '';
   messageInput.value = '';
   console.log(feedback);
-});
+}
+
+form.addEventListener('submit', handleSubmit);
