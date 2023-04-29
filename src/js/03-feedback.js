@@ -1,1 +1,48 @@
+import throttle from 'lodash.throttle';
 
+const form = document.querySelector('.feedback-form');
+const emailInput = document.querySelector('input[name="email"]');
+const messageInput = document.querySelector('textarea[name="message"]');
+const LOCALSTORAGE_KEY = 'feedback-form-state';
+
+function saveToLocalStorage() {
+  try {
+    const feedback = {
+      email: emailInput.value,
+      message: messageInput.value,
+    };
+    localStorage.setItem(LOCALSTORAGE_KEY, JSON.stringify(feedback));
+  } catch (e) {
+    console.error('Error saving to localStorage:', e);
+  }
+}
+
+const throttleSaveToLocalStorage = throttle(saveToLocalStorage, 500);
+
+form.addEventListener('input', () => {
+  throttleSaveToLocalStorage();
+});
+
+window.addEventListener('load', () => {
+  try {
+    const prevVal = JSON.parse(localStorage.getItem(LOCALSTORAGE_KEY));
+    if (prevVal) {
+      emailInput.value = prevVal.email;
+      messageInput.value = prevVal.message;
+    }
+  } catch (e) {
+    console.error('Error reading from localStorage:', e);
+  }
+});
+
+form.addEventListener('submit', event => {
+  event.preventDefault();
+  const feedback = {
+    email: emailInput.value,
+    message: messageInput.value,
+  };
+  localStorage.removeItem(LOCALSTORAGE_KEY);
+  emailInput.value = '';
+  messageInput.value = '';
+  console.log(feedback);
+});
