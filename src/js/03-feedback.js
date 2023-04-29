@@ -32,8 +32,8 @@ window.addEventListener('load', () => {
 });
 
 function validateForm() {
-  if (!messageInput.value.trim()) {
-    alert('Please enter a message');
+  if (!messageInput.value.trim() || !emailInput.value.trim()) {
+    alert('Please complete both fields');
     return false;
   }
   return true;
